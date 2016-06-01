@@ -5,9 +5,10 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 public class JpaUtil {
+	
 	private static EntityManagerFactory factory;
 	static{
-		factory = Persistence.createEntityManagerFactory("ProjetoJPAHIBERNATE");
+		factory = Persistence.createEntityManagerFactory("Agenda");
 	}
 	
 	public static EntityManager getEntityManager(){

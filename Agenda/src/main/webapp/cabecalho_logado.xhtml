@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+<h:head>
+	<title>CABECALHO</title>
+	<link rel="stylesheet" type="text/css" href="css/estilo.css" />
+</h:head>
+<h:body>
+	<b:navBar brand="Agenda Salas" brandHref="#" inverse="true">
+		<b:navbarLinks>
+			
+			<b:navLink value="Home" href="#"></b:navLink>
+			<b:navLink value="Agenda" href="#"></b:navLink>
+			<b:navLink value="Eventos" href="#"></b:navLink>
+
+		</b:navbarLinks>
+
+		<b:navbarLinks pull="right" >
+			<b:dropMenu value="Olá #{usuarioController.user.nome == null ? 'Visitante': {usuarioController.user.nome}}">
+				<b:navLink value="Meu perfil" href="#" />
+				<b:navLink value="Meus convites" href="#" />
+				<b:navLink value="Meus eventos" href="#" />
+				<b:navLink></b:navLink>
+				<b:navLink header="Opções" />
+				<b:navLink value="Configurações" href="#" />
+				<b:navLink value="Mudar Senha" href="#" />
+			</b:dropMenu>
+		</b:navbarLinks>
+	</b:navBar>
+</h:body>
+</html>
