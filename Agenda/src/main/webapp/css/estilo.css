@@ -2,8 +2,12 @@
 
 .navbar {
 	border-radius: 0px !important;
+	margin-bottom: 0px !important;
 }
 
 .sem_borda, .sem_borda tr, .sem_borda td{
 	border: 0px !important;
+}
+body {
+	background-color: #eeeeee;
 }

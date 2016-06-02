@@ -15,11 +15,11 @@ import javax.persistence.TemporalType;
 
 @Entity
 public class Usuario {
-	public int id;
-	public String nome, login, senha;
-	public Date dt_nascimento;
-	public Instituicao instituicao;
-	public Setor setor;
+	private int id;
+	private String nome, login, senha;
+	private Date dt_nascimento;
+	private Instituicao instituicao;
+	private Setor setor;
 	
 	
 	@Id

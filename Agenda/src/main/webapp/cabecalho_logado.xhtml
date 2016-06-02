@@ -10,7 +10,7 @@
 	<link rel="stylesheet" type="text/css" href="css/estilo.css" />
 </h:head>
 <h:body>
-	<b:navBar brand="Agenda Salas" brandHref="#" inverse="true">
+	<b:navBar brand="IncNews" brandHref="#" inverse="true">
 		<b:navbarLinks>
 			
 			<b:navLink value="Home" href="#"></b:navLink>
@@ -20,7 +20,7 @@
 		</b:navbarLinks>
 
 		<b:navbarLinks pull="right" >
-			<b:dropMenu value="Olá #{usuarioController.user.nome == null ? 'Visitante': {usuarioController.user.nome}}">
+			<b:dropMenu value="Olá #{usuarioController.user.nome == null ? 'Visitante': usuarioController.user.nome}">
 				<b:navLink value="Meu perfil" href="#" />
 				<b:navLink value="Meus convites" href="#" />
 				<b:navLink value="Meus eventos" href="#" />
@@ -29,6 +29,8 @@
 				<b:navLink value="Configurações" href="#" />
 				<b:navLink value="Mudar Senha" href="#" />
 			</b:dropMenu>
+			<b:navLink  value="Sair" icon-awesome="power-off" iconAlign="right">
+			</b:navLink>
 		</b:navbarLinks>
 	</b:navBar>
 </h:body>
