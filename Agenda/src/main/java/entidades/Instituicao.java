@@ -8,7 +8,7 @@ import javax.persistence.Id;
 @Entity
 public class Instituicao {
 	int id;
-	String nome,email;
+	String nome,email,responsavel,telefone,endereco;
 	boolean sn_ativo;
 	
 	@Id
@@ -43,6 +43,30 @@ public class Instituicao {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getResponsavel() {
+		return responsavel;
+	}
+
+	public void setResponsavel(String responsavel) {
+		this.responsavel = responsavel;
+	}
+
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+
+	public String getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(String endereco) {
+		this.endereco = endereco;
 	}
 
 	public Instituicao() {

@@ -31,12 +31,13 @@ public class UsuarioDAO {
 
 	public Usuario valida_login(Usuario usuario){
 		EntityManager em = new JpaUtil().getEntityManager();
-		Query query = em.createQuery("from Usuario where login like :user and senha = sha2( :pass , 512 )");
+		Query query = em.createQuery("from Usuario where instituicao = :ins and login like :user and senha = sha2( :pass , 512 )");
 		Usuario user;
 		List<Usuario> l;
 		try {
 			query.setParameter("user", usuario.getLogin());
 			query.setParameter("pass", usuario.getSenha());
+			query.setParameter("ins", usuario.getInstituicao());
 
 			l = query.getResultList();
 			user = l.get(0);

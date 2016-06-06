@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+<h:head>
+	<title>Cadastro de empresa</title>
+	<link rel="stylesheet" type="text/css" href="css/estilo.css" />
+</h:head>
+<h:body>
+	<h:form>
+		<!-- Importa Cabecalho -->
+		<ui:include src="/cabecalho.xhtml" />
+	</h:form>
+	<h:form>
+		<p:outputPanel>
+			<div class="ui-grid ui-grid-responsive">
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-1" />
+					<div class="ui-grid-col-10">
+						<b:panel look="info">
+
+							<center>
+								<h3>
+									<h:outputText value="Cadastre sua Empresa!" />
+								</h3>
+								<h4>
+									<h:outputText value="Preencha os dados necessários a seguir." />
+								</h4>
+								<p:messages autoUpdate="true" showDetail="true" />
+								<hr />
+								<p:panelGrid id="grid" columns="3" styleClass="sem_borda">
+									<h:outputText value="Razão Social:" />
+									<p:inputText id="nome"
+										value="#{instituicaoController.instituicao_cad.nome}" required="true" />
+										 <p:message for="nome" />
+									<h:outputText value="Email:" />
+									<p:inputText id="email"
+										value="#{instituicaoController.instituicao_cad.email}"/>
+										 <p:message for="email" />
+									<h:outputText value="Endereço completo:" />
+									<p:inputText id="endereco"
+										value="#{instituicaoController.instituicao_cad.endereco}" />										
+										 <p:message for="endereco" />
+									<h:outputText value="Nome do responsável:" />
+									<p:inputText id="responsavel"
+										value="#{instituicaoController.instituicao_cad.responsavel}" />							
+										 <p:message for="responsavel" />
+									<h:outputText value="Telefone:" />
+									<p:inputText id="telefone"
+										value="#{instituicaoController.instituicao_cad.telefone}" />															
+										 <p:message for="telefone" />
+								</p:panelGrid>
+								<br />
+								<hr />
+								<p:commandButton value="Cadastrar" actionListener="#{instituicaoController.cadastra_empresa()}"
+								 styleClass="botao botao_verde botao_grande" ajax="true" update="grid" type="submit" validateClient="true" />
+							</center>
+						</b:panel>
+					</div>
+					<div class="ui-grid-col-1" />
+
+				</div>
+			</div>
+		</p:outputPanel>
+	</h:form>
+	
+</h:body>
+</html>

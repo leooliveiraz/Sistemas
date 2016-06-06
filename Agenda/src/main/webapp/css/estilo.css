@@ -5,9 +5,221 @@
 	margin-bottom: 0px !important;
 }
 
-.sem_borda, .sem_borda tr, .sem_borda td{
+.sem_borda, .sem_borda tr, .sem_borda td {
 	border: 0px !important;
 }
+
 body {
 	background-color: #eeeeee;
+}
+.ui-inputfield{
+	box-shadow: inset 0 1px 0px #8f8f8f !important ;
+	border-radius: 0px !important;
+}
+.ui-inputfield :focus{
+	box-shadow: 0px 0px 5px #85b2cb !important;
+}
+.fa {
+	font-size: 18px !important;
+}
+
+.botao {
+	display: inline-block !important;
+	padding: 7px 11px !important;
+	margin-bottom: 5 !important;
+	font-size: 14px !important;
+	font-weight: normal !important;
+	line-height: 1.42857143 !important;
+	text-align: center !important;
+	white-space: nowrap !important;
+	vertical-align: middle !important;
+	-ms-touch-action: manipulation !important;
+	touch-action: manipulation !important;
+	cursor: pointer !important;
+	-webkit-user-select: none !important;
+	-moz-user-select: none !important;
+	-ms-user-select: none !important;
+	user-select: none !important;
+	background-image: none !important;
+	border: 0px solid transparent !important;
+	border-radius: 0px !important;
+	text-shadow: 0px 0px !important;
+}
+
+.botao_vermelho {
+	color: #fff !important;
+	background-color: #F04124 !important;
+	border-color: #ea2f10 !important;
+	background: #F04124 !important;
+}
+
+.botao_vermelho:FOCUS {
+	color: #fff !important;
+	background-color: #D32A0E !important;
+	border-color: #ea2f10 !important;
+	background: #D32A0E !important;
+}
+
+.botao_vermelho:HOVER {
+	color: #fff !important;
+	background-color: #D32A0E !important;
+	border-color: #ea2f10 !important;
+	background: #D32A0E !important;
+}
+
+.botao_vermelho:ACTIVE {
+	color: #fff !important;
+	background-color: #B1240C !important;
+	border-color: #ea2f10 !important;
+	background: #B1240C !important;
+}
+
+.botao_link {
+	color: #008cba !important;
+	background-color: transparent !important;;
+}
+
+.botao_link:FOCUS {
+	color: #008cba !important;
+	text-decoration: underline !important;;
+	background-color: transparent !important;;
+}
+
+.botao_link:HOVER {
+	color: #008cba !important;
+	text-decoration: underline !important;;
+	background-color: transparent !important;;
+}
+
+.botao_link:ACTIVE {
+	color: #008cba !important;
+	text-decoration: underline !important;;
+	background-color: transparent !important;;
+}
+
+.botao_verde {
+	color: #fff !important;
+	background-color: #3CB521 !important;
+	border-color: #4cae4c !important;
+}
+
+.botao_verde:FOCUS {
+	color: #fff !important;
+	background-color: #449D44 !important;
+	border-color: #4cae4c !important;
+}
+
+.botao_verde:HOVER {
+	color: #fff !important;
+	background-color: #449D44 !important;
+	border-color: #4cae4c !important;
+}
+
+.botao_verde:ACTIVE {
+	color: #fff !important;
+	background-color: #3e8f3e !important;
+	border-color: #4cae4c !important;
+}
+
+.botao_azul {
+	color: #fff !important;
+	background-color: #008cba !important;
+	border-color: #0079a1 !important;
+	background: #008CBA !important;
+}
+
+.botao_azul:FOCUS {
+	color: #fff !important;
+	background-color: #2699BB !important;
+	border-color: #46b8da ! important;
+}
+
+.botao_azul:HOVER {
+	color: #fff !important;
+	background-color: #006687 !important;
+	border-color: #004B63 !important;
+}
+
+.botao_azul:ACTIVE {
+	color: #fff !important;
+	background-color: #004B63 !important;
+	border-color: #001921 !important;
+}
+
+.botao_azul_claro {
+	color: #fff !important;
+	background-color: #5bc0de !important;
+	border-color: #46b8da !important;
+}
+
+.botao_azul_claro:FOCUS {
+	color: #fff !important;
+	background-color: #2699BB !important;
+	border-color: #46b8da ! important;
+}
+
+.botao_azul_claro:HOVER {
+	color: #fff !important;
+	background-color: #31B3D5 !important;
+	border-color: #31B3D5 !important;
+}
+
+.botao_azul_claro:ACTIVE {
+	color: #fff !important;
+	background-color: #2699BB !important;
+	border-color: #1B6D85 !important;
+}
+
+.botao_amarelo {
+	color: #fff !important;
+	background-color: #E99002 !important;
+	border-color: #D08002 !important;
+	background: #E99002 !important;
+}
+
+.botao_amarelo:FOCUS {
+	color: #fff !important;
+	background-color: #B67102 !important;
+	border-color: #E99002 ! important;
+}
+
+.botao_amarelo:HOVER {
+	color: #fff !important;
+	background-color: #B67102 !important;
+	border-color: #E99002 !important;
+}
+
+.botao_amarelo:ACTIVE {
+	color: #fff !important;
+	background-color: #C55E01 !important;
+	border-color: #E99002 !important;
+}
+
+.botao_muito_pequeno {
+	padding: 4px 6px !important;
+	font-size: 12px !important;
+	line-height: 1.5 !important;
+	border-radius: 0 !important;
+}
+
+.botao_pequeno {
+	padding: 8px 12px !important;
+	font-size: 12px !important;
+	line-height: 1.5 !important;
+	border-radius: 0 !important;
+}
+
+.botao_grande {
+	padding: 16px 20px !important;
+	font-size: 19px !important;
+	line-height: 1.3333333 !important;
+	border-radius: 0 !important;
+}
+
+.botao_grande .ui-icon {
+	font-size: 30px !important;
+	position: absolute;
+	top: 38%;
+	width: 30px;
+	height: 30px;
 }

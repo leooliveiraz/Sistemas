@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+<h:head>
+	<title>Cadastro bem sucedido</title>
+	<link rel="stylesheet" type="text/css" href="css/estilo.css" />
+</h:head>
+<h:body>
+	<h:form>
+		<!-- Importa Cabecalho -->
+		<ui:include src="/cabecalho.xhtml" />
+	</h:form>
+	<h:form>
+		<p:outputPanel>
+			<div class="ui-grid ui-grid-responsive">
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-1" />
+					<div class="ui-grid-col-10">
+						<b:panel look="info">
+
+							<center>
+								<h2>
+									<h:outputText value="Parabéns!" />
+								</h2>
+								<h3>
+									<h:outputText
+										value="Sua empresa foi cadastrada com sucesso em nosso sistema!" />
+								</h3>
+								<hr />
+							</center>
+							<h:outputText
+								value="O código de acesso para sua empresa é o numero: !" />
+							<br />
+							<h:outputText
+								value="Criamos uma conta mestra de acesso ao nosso sistema para você, por favor anote e não perca !" />
+							<br />
+							<h:outputText value="Segue os dados: " />
+							<center>
+								<h3>
+									<p:panelGrid columns="2" styleClass="sem_borda">
+										<h:outputText value="ID da empresa:" />
+										<h:outputText
+											value="#{instituicaoController.instituicao_cad.id}" />
+										<h:outputText value="Seu usuário:" />
+										<h:outputText
+											value="#{instituicaoController.usuario_cad.login}" />
+										<h:outputText value="Sua senha:" />
+										<h:outputText value="#{instituicaoController.senha}" />
+
+									</p:panelGrid>
+								</h3>
+								<hr />
+							</center>
+							<br />
+							<h:outputText
+								value="Caso você perca a senha, você pode recuperá-la depois, na opção de recuperação de senhas. Bastando informar apenas o email da empresa." />
+							<br /><center>
+							<p:commandButton value="Voltar ao Inicio!" 
+								styleClass="botao botao_verde botao_grande"
+								actionListener="#{instituicaoController.redireciona_inicio()}"
+								icon="fa fa-cloud-upload " />
+								</center>
+							<br />
+
+						</b:panel>
+					</div>
+					<div class="ui-grid-col-1" />
+
+				</div>
+			</div>
+		</p:outputPanel>
+	</h:form>
+</h:body>
+</html>
