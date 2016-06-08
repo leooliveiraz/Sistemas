@@ -58,4 +58,13 @@ public class UsuarioDAO {
 		lista = q.getResultList();
 		return lista;
 	}
+	
+	public List<Usuario> lista_usuarios_instituicao(int instituicao){
+		EntityManager em = JpaUtil.getEntityManager();
+		List<Usuario> lista;
+		Query q = em.createQuery("from Usuario where instituicao = :i");
+		q.setParameter("i", instituicao);
+		lista = q.getResultList();
+		return lista;
+	}
 }

@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+<h:head>
+	<title>Cadastro de empresa</title>
+	<link rel="stylesheet" type="text/css" href="css/estilo.css" />
+</h:head>
+<h:body>
+	<h:form>
+		<!-- Importa Cabecalho -->
+		<ui:include src="/cabecalho_logado.xhtml" />
+	</h:form>
+	<h:form>
+		<p:outputPanel>
+			<div class="ui-grid ui-grid-responsive">
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-1" />
+					<div class="ui-grid-col-10">
+						<b:panel look="info">
+
+							<center>
+								<h3>
+									<h:outputText value="Registro de setores" />
+								</h3>
+								<h4>
+									<h:outputText value="Preencha os dados necessários a seguir." />
+								</h4>
+								<p:messages autoUpdate="true" showDetail="true" />
+								<hr />
+								<p:dataTable value="#{setorController.lista}" var="it"
+									scrollable="true" scrollHeight="50%" scrollWidth="100%"
+									emptyMessage="Não encontramos nenhum dado.">
+									<p:column headerText="ID">
+										<h:outputText value="#{it.id_setor}" />
+									</p:column>
+									<p:column headerText="Setor">
+										<h:outputText value="#{it.nm_setor}" />
+									</p:column>
+									<p:column headerText="Ativo">
+										<h:outputText value="#{it.sn_ativo == true? 'Sim':'Não'}" />
+									</p:column>
+									<p:column headerText="Responsável">
+										<h:outputText value="#{it.usuario.nome}" />
+									</p:column>
+
+								</p:dataTable>
+								<br />
+								<hr />
+								<p:commandButton value="Cadastrar"
+									onclick="PF('cad_setor').show()"
+									styleClass="botao botao_verde botao_grande" type="submit"
+									validateClient="true" />
+							</center>
+						</b:panel>
+					</div>
+					<div class="ui-grid-col-1" />
+
+				</div>
+			</div>
+		</p:outputPanel>
+	</h:form>
+
+	<h:form>
+		<p:dialog widgetVar="cad_setor" closable="false" resizable="false" header="Cadastro de Setores" modal="true"
+			width="90%" height="80%">
+			<center>
+				<p:panelGrid columns="3" styleClass="sem_borda">
+					
+					
+					<h:outputText value="Setor" />
+					<p:inputText id="setor"
+						value="#{setorController.setor_cad.nm_setor}"
+						required="true" />
+					<p:message for="setor" />
+					
+					<h:outputText value="Status:" />
+					<p:selectOneMenu id="status" value="#{setorController.setor_cad.sn_ativo}">
+						<f:selectItem itemLabel="Ativo" itemValue="true"/>
+						<f:selectItem itemLabel="Inativo" itemValue="false"/>
+					</p:selectOneMenu>
+					<p:message for="status" />
+				</p:panelGrid>
+			</center>
+			<p:commandButton value="Sair" onclick="PF('cad_setor').hide()"
+				styleClass="botao botao_vermelho botao_grande" type="submit"
+				validateClient="true" />
+		</p:dialog>
+	</h:form>
+</h:body>
+</html>

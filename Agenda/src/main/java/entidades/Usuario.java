@@ -1,5 +1,6 @@
 package entidades;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -14,7 +15,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class Usuario {
+public class Usuario implements Serializable {
+	private static final long serialVersionUID = 2485161553455351068L;
 	private int id;
 	private String nome, login, senha;
 	private Date dt_nascimento;

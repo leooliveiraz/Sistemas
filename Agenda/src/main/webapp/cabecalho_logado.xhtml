@@ -13,7 +13,6 @@
 	<b:navBar brand="Projeto" brandHref="#" inverse="true" fluid="true">
 		<b:navbarLinks>
 			
-			<b:navLink value="Home" href="#"></b:navLink>
 			<b:navLink value="Agenda" href="#"></b:navLink>
 			<b:navLink value="Eventos" href="#"></b:navLink>
 
@@ -26,12 +25,25 @@
 				<b:navLink value="Meus eventos" href="#" />
 				<b:navLink></b:navLink>
 				<b:navLink header="Opções" />
-				<b:navLink value="Configurações" href="#" />
 				<b:navLink value="Mudar Senha" href="#" />
 			</b:dropMenu>
-			<b:navLink  value="Sair" icon-awesome="power-off" iconAlign="right" actionListener="#{usuarioController.realiza_logoff()}">
-			</b:navLink>
+			<b:dropMenu icon-awesome="fa-cog" value="">
+				<b:navLink value="Setores" href="cadastro_setores.xhtml" />
+				<b:navLink value="Usuários" href="usuarios.xhtml" />
+				<b:navLink value="Locais" href="locais.xhtml" />
+			</b:dropMenu>
+			
+			<b:navCommandLink  onclick="PF('sair').show()" ajax="true" >
+				<b:iconAwesome name="power-off"></b:iconAwesome>
+			</b:navCommandLink>
 		</b:navbarLinks>
 	</b:navBar>
 </h:body>
+
+<h:form>
+	<p:dialog header="Deseja sair?" widgetVar="sair" resizable="false" closable="false" draggable="false">
+		<p:commandButton value="Sim" styleClass="botao botao_verde" actionListener="#{usuarioController.realiza_logoff()}" />
+		<p:commandButton value="Não" styleClass="botao botao_vermelho" onclick="PF('sair').hide()"  />
+	</p:dialog>
+</h:form>
 </html>

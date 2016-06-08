@@ -57,7 +57,8 @@ public class UsuarioController implements Serializable{
 			}else{
 				this.user = usuario;
 				this.sn_logado = true;
-				FacesContext.getCurrentInstance().getAttributes().put("usuario", this.user);
+				HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+				session.setAttribute("usuario", this.user);
 				FacesContext.getCurrentInstance().getExternalContext().redirect("tela_principal.xhtml");	
 			}
 		} catch (Exception e) {
@@ -70,7 +71,8 @@ public class UsuarioController implements Serializable{
 
 	public void realiza_logoff(){
 		try {
-			FacesContext.getCurrentInstance().getAttributes().clear();
+			HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+			session.invalidate();
 			FacesContext.getCurrentInstance().getExternalContext().redirect("inicio.xhtml");	
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -80,7 +82,8 @@ public class UsuarioController implements Serializable{
 	}
 
 	public String recupera_usuario(){
-		Usuario u = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario") ;
+		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+		Usuario u = (Usuario) session.getAttribute("usuario");
 		if(!user.equals(u))
 			try {
 				Logger log =Logger.getLogger(UsuarioController.class);

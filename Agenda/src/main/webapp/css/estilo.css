@@ -223,3 +223,8 @@ body {
 	width: 30px;
 	height: 30px;
 }
+
+
+.ui-selectonemenu-trigger {
+    width: 30px !important;
+}
