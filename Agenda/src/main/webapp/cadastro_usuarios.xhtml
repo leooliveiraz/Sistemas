@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+<h:head>
+	<title>Cadastro de empresa</title>
+	<link rel="stylesheet" type="text/css" href="css/estilo.css" />
+</h:head>
+<h:body>
+	<h:form>
+		<!-- Importa Cabecalho -->
+		<ui:include src="/cabecalho_logado.xhtml" />
+	</h:form>
+	<h:form id="principal">
+		<p:outputPanel>
+			<div class="ui-grid ui-grid-responsive">
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-1" />
+					<div class="ui-grid-col-10">
+						<b:panel look="info">
+
+							<center>
+								<h3>
+									<h:outputText value="Registro de usuários" />
+								</h3>
+								<h4>
+									<h:outputText value="Preencha os dados necessários a seguir." />
+								</h4>
+								<p:messages autoUpdate="true" showDetail="true" />
+								<hr />
+								<p:dataTable value="#{usuario_FormController.lista}" var="it" emptyMessage="Não encontramos nenhum dado."
+								scrollHeight="70%">
+									<p:column headerText="Usuário:"><h:outputText value="#{it.login}" /> </p:column>
+									<p:column headerText="Nome:"><h:outputText value="#{it.nome}" /> </p:column>
+									<p:column headerText="Setor:"><h:outputText value="#{it.setor.nm_setor}" /> </p:column>
+									<p:column headerText="Data de Nascimento:"><h:outputText value="#{it.dt_nascimento}" /> </p:column>
+									
+								
+								</p:dataTable>
+								<br />
+								<hr />
+								<p:commandButton value="Cadastrar" icon="fa fa-plus" onclick="PF('cad_us').show()"
+									styleClass="botao botao_verde botao_grande" type="submit"
+									validateClient="true" />
+								<p:commandButton value="Alterar" icon="fa fa-recycle" 
+									styleClass="botao botao_amarelo botao_grande" type="submit"
+									validateClient="true" />
+							</center>
+						</b:panel>
+					</div>
+					<div class="ui-grid-col-1" />
+
+				</div>
+			</div>
+		</p:outputPanel>
+	</h:form>
+	
+	<!-- FORM CADASTRO -->
+	<h:form id="cad" >
+		<p:dialog widgetVar="cad_us">
+			<center>				
+				<p:panelGrid columns="3" styleClass="sem_borda" id="pn_cad">
+					<h:outputText value="Usuário:" />
+					<p:inputText value="#{usuario_FormController.user_cad.login}" id="cad_login"/>
+					<p:message for="cad_login"  />
+					
+					<h:outputText value="Nome:" />
+					<p:inputText value="#{usuario_FormController.user_cad.nome}" id="cad_nome"/>
+					<p:message for="cad_nome" />
+					
+					<h:outputText value="Data de Nascimento:" />
+					<p:calendar value="#{usuario_FormController.user_cad.dt_nascimento}" id="cad_dt" />	
+					<p:message for="cad_dt" />
+					
+					<h:outputText value="Setor" />	
+					<p:selectOneMenu value="#{usuario_FormController.user_cad.setor}" id="cad_setor">
+						<f:selectItem itemLabel="Selecione um setor."/>
+						<f:selectItems value="#{usuario_FormController.lista_setor}" var="it" itemLabel="#{it.nm_setor}" itemValue="#{it}" />
+					</p:selectOneMenu>	
+					<p:message for="cad_setor" />		
+						
+					<h:outputText value="Senha:" />	
+					<p:password value="#{usuario_FormController.user_cad.senha}" id="cad_senha" />	
+					<p:message for="cad_senha" />		
+						
+					<h:outputText value="Confirme a senha:" />					
+					<p:password value="#{usuario_FormController.senha_confirmacao}" id="cad_senha_c" />	
+					<p:message for="cad_senha_c" />	
+				</p:panelGrid>
+			</center>
+		</p:dialog>
+	</h:form>
+
+</h:body>
+</html>

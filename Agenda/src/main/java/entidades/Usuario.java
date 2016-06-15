@@ -8,14 +8,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import sistema.BaseEntity;
+
 @Entity
-public class Usuario implements Serializable {
+public class Usuario implements Serializable,BaseEntity {
 	private static final long serialVersionUID = 2485161553455351068L;
 	private int id;
 	private String nome, login, senha;
@@ -110,9 +110,11 @@ public class Usuario implements Serializable {
 		int result = 1;
 		result = prime * result + ((dt_nascimento == null) ? 0 : dt_nascimento.hashCode());
 		result = prime * result + id;
+		result = prime * result + ((instituicao == null) ? 0 : instituicao.hashCode());
 		result = prime * result + ((login == null) ? 0 : login.hashCode());
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
 		result = prime * result + ((senha == null) ? 0 : senha.hashCode());
+		result = prime * result + ((setor == null) ? 0 : setor.hashCode());
 		return result;
 	}
 
@@ -132,6 +134,11 @@ public class Usuario implements Serializable {
 			return false;
 		if (id != other.id)
 			return false;
+		if (instituicao == null) {
+			if (other.instituicao != null)
+				return false;
+		} else if (!instituicao.equals(other.instituicao))
+			return false;
 		if (login == null) {
 			if (other.login != null)
 				return false;
@@ -147,7 +154,11 @@ public class Usuario implements Serializable {
 				return false;
 		} else if (!senha.equals(other.senha))
 			return false;
+		
 		return true;
 	}
 
+	
+
+	
 }

@@ -9,6 +9,7 @@ import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 
+import entidades.Instituicao;
 import entidades.Usuario;
 import sistema.JpaUtil;
 
@@ -59,12 +60,24 @@ public class UsuarioDAO {
 		return lista;
 	}
 	
-	public List<Usuario> lista_usuarios_instituicao(int instituicao){
+	public List<Usuario> lista_usuarios_instituicao(Instituicao instituicao){
 		EntityManager em = JpaUtil.getEntityManager();
 		List<Usuario> lista;
 		Query q = em.createQuery("from Usuario where instituicao = :i");
 		q.setParameter("i", instituicao);
 		lista = q.getResultList();
 		return lista;
+	}
+	public Usuario usuario_id(int id){
+		EntityManager em = JpaUtil.getEntityManager();
+		try{
+			Usuario u = em.find(Usuario.class, id);
+			return u;			
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}finally {
+			em.close();
+		}
 	}
 }

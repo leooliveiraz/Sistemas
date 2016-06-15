@@ -18,6 +18,25 @@ public class SetorController {
 	private Setor setor_cad = new Setor(),setor_edit = new Setor();
 	private List<Setor> lista,lista_filtrada;
 	private List<Usuario> lista_usuarios;
+	private int id;
+	private int id2;
+
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	
+	public int getId2() {
+		return id2;
+	}
+	public void setId2(int id2) {
+		this.id2 = id2;
+	}
+
+
 	@ManagedProperty(value = "#{usuarioController}")
 	private UsuarioController usuarioController;
 	
@@ -60,11 +79,29 @@ public class SetorController {
 	@PostConstruct
 	public void inicializa(){
 		gera_lista_setores();
+		gera_lista_usuarios();
 	}
 	public void gera_lista_setores(){
 		SetorDAO dao = new SetorDAO();
-		this.lista = dao.lista_setor_instituicao(this.usuarioController.getUser().getInstituicao().getId());
+		this.lista = dao.lista_setor_instituicao(this.usuarioController.getUser().getInstituicao());
 	}
-
+	public void gera_lista_usuarios(){
+		UsuarioDAO dao = new UsuarioDAO();
+		this.lista_usuarios = dao.lista_usuarios_instituicao(this.usuarioController.getUser().getInstituicao());
+	}
 	
+	public void cadastra_setor(){
+		SetorDAO dao = new SetorDAO();
+		this.setor_cad.setInstituicao(this.usuarioController.getUser().getInstituicao());		
+		dao.inserir(this.setor_cad);		
+		gera_lista_setores();
+		this.setor_cad = new Setor();
+	}
+	
+	public void altera_setor(){
+		SetorDAO dao = new SetorDAO();	
+		dao.atualiza(this.setor_edit);		
+		gera_lista_setores();
+		this.setor_cad = new Setor();
+	}
 }

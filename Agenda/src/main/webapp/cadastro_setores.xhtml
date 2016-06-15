@@ -14,7 +14,7 @@
 		<!-- Importa Cabecalho -->
 		<ui:include src="/cabecalho_logado.xhtml" />
 	</h:form>
-	<h:form>
+	<h:form id="principal">
 		<p:outputPanel>
 			<div class="ui-grid ui-grid-responsive">
 				<div class="ui-grid-row">
@@ -31,9 +31,21 @@
 								</h4>
 								<p:messages autoUpdate="true" showDetail="true" />
 								<hr />
-								<p:dataTable value="#{setorController.lista}" var="it"
+								<p:dataTable value="#{setorController.lista}" var="it" id="tab"
 									scrollable="true" scrollHeight="50%" scrollWidth="100%"
+									selection="#{setorController.setor_edit}"
+									selectionMode="single" rowKey="#{it.id_setor}"
 									emptyMessage="Não encontramos nenhum dado.">
+
+									<p:ajax event="rowSelect">
+										<f:setPropertyActionListener value="#{it}"
+											target="#{setorController.setor_edit}" />
+									</p:ajax>
+									<p:ajax event="rowSelect">
+										<f:setPropertyActionListener value="#{it.usuario.id}"
+											target="#{setorController.id2}" />
+									</p:ajax>
+
 									<p:column headerText="ID">
 										<h:outputText value="#{it.id_setor}" />
 									</p:column>
@@ -51,8 +63,12 @@
 								<br />
 								<hr />
 								<p:commandButton value="Cadastrar"
-									onclick="PF('cad_setor').show()"
+									onclick="PF('cad_setor').show()" icon="fa fa-plus"
 									styleClass="botao botao_verde botao_grande" type="submit"
+									validateClient="true" />
+								<p:commandButton value="Alterar" icon="fa fa-recycle"
+									onclick="PF('edit_setor').show()" update=":edit:edit_grid"
+									styleClass="botao botao_amarelo botao_grande" type="submit"
 									validateClient="true" />
 							</center>
 						</b:panel>
@@ -65,29 +81,94 @@
 	</h:form>
 
 	<h:form>
-		<p:dialog widgetVar="cad_setor" closable="false" resizable="false" header="Cadastro de Setores" modal="true"
-			width="90%" height="80%">
+		<p:dialog widgetVar="cad_setor" closable="false" resizable="false"
+			header="Cadastro de Setores" modal="true" width="60%" height="80%">
 			<center>
 				<p:panelGrid columns="3" styleClass="sem_borda">
-					
-					
+
+
 					<h:outputText value="Setor" />
 					<p:inputText id="setor"
-						value="#{setorController.setor_cad.nm_setor}"
-						required="true" />
+						value="#{setorController.setor_cad.nm_setor}" required="true" />
 					<p:message for="setor" />
-					
+
+					<h:outputText value="Responsável:" />
+					<p:selectOneMenu id="responsavel" converter="simpleEntityConverter"
+						value="#{setorController.setor_cad.usuario}">
+						<f:selectItem itemLabel="Selecione o responsável pelo setor" />
+						<f:selectItems value="#{setorController.lista_usuarios}" var="u"
+							itemValue="#{u}" itemLabel="#{u.nome}" />
+					</p:selectOneMenu>
+					<p:message for="responsavel" />
+
 					<h:outputText value="Status:" />
-					<p:selectOneMenu id="status" value="#{setorController.setor_cad.sn_ativo}">
-						<f:selectItem itemLabel="Ativo" itemValue="true"/>
-						<f:selectItem itemLabel="Inativo" itemValue="false"/>
+					<p:selectOneMenu id="status"
+						value="#{setorController.setor_cad.sn_ativo}">
+						<f:selectItem itemLabel="Ativo" itemValue="#{true}" />
+						<f:selectItem itemLabel="Inativo" itemValue="#{false}" />
 					</p:selectOneMenu>
 					<p:message for="status" />
 				</p:panelGrid>
+				<hr />
+				<p:commandButton value="Cadastrar"
+					oncomplete="PF('cad_setor').hide()" update=":principal:tab"
+					actionListener="#{setorController.cadastra_setor()}"
+					styleClass="botao botao_verde botao_grande" type="submit"
+					validateClient="true" />
+				<p:commandButton value="Sair" onclick="PF('cad_setor').hide()"
+					update=":principal:tab"
+					styleClass="botao botao_vermelho botao_grande" type="submit"
+					validateClient="true" />
 			</center>
-			<p:commandButton value="Sair" onclick="PF('cad_setor').hide()"
-				styleClass="botao botao_vermelho botao_grande" type="submit"
-				validateClient="true" />
+		</p:dialog>
+	</h:form>
+
+	<h:form id="edit">
+		<p:dialog widgetVar="edit_setor" closable="false" resizable="false"
+			header="Alterando Setores" modal="true" width="60%" height="80%">
+			<center>
+				<p:panelGrid columns="3" styleClass="sem_borda" id="edit_grid">
+					<h:outputText value="ID:" />
+					<p:inputText id="id_setor"
+						value="#{setorController.setor_edit.id_setor}" required="true"
+						disabled="true" />
+					<p:message for="id_setor" />
+
+					<h:outputText value="Setor" />
+					<p:inputText id="setor_nm"
+						value="#{setorController.setor_edit.nm_setor}" required="true" />
+					<p:message for="setor_nm" />
+
+					<h:outputText value="Responsável:" />
+					<p:selectOneMenu id="responsavel_nm"
+						converter="simpleEntityConverter"
+						value="#{setorController.setor_edit.usuario}">
+						<f:selectItem itemLabel="Selecione o responsável pelo setor"
+							noSelectionOption="true" />
+						<f:selectItems value="#{setorController.lista_usuarios}" var="u"
+							itemValue="#{u}" itemLabel="#{u.nome}" />
+					</p:selectOneMenu>
+					<p:message for="responsavel_nm" />
+
+					<h:outputText value="Status:" />
+					<p:selectOneMenu id="status_sn"
+						value="#{setorController.setor_edit.sn_ativo}">
+						<f:selectItem itemValue="#{true}" itemLabel="SIM" />
+						<f:selectItem itemValue="#{false}" itemLabel="NÃO" />
+					</p:selectOneMenu>
+					<p:message for="status_sn" />
+				</p:panelGrid>
+				<hr />
+				<p:commandButton value="Cadastrar"
+					oncomplete="PF('edit_setor').hide()" update=":principal:tab"
+					actionListener="#{setorController.altera_setor()}"
+					styleClass="botao botao_verde botao_grande" type="submit"
+					validateClient="true" />
+				<p:commandButton value="Sair" onclick="PF('edit_setor').hide()"
+					update=":principal:tab"
+					styleClass="botao botao_vermelho botao_grande" type="reset"
+					validateClient="true" />
+			</center>
 		</p:dialog>
 	</h:form>
 </h:body>

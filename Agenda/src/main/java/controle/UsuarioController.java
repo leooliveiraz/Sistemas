@@ -78,6 +78,12 @@ public class UsuarioController implements Serializable{
 			e.printStackTrace();
 			Logger log =Logger.getLogger(UsuarioController.class);
 			log.error(e.getStackTrace());
+			try {
+				FacesContext.getCurrentInstance().getExternalContext().redirect("inicio.xhtml");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}	
 		}		
 	}
 
@@ -100,4 +106,5 @@ public class UsuarioController implements Serializable{
 		}
 		return null;
 	}
+	
 }

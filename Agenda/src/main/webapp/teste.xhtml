@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+<h:head>
+	<title>HOME</title>
+	<link rel="stylesheet" type="text/css" href="css/estilo.css" />
+</h:head>
+<h:body>
+	<h:form id="form">
+		<h:panelGrid columns="2" border="1">
+			<h:outputLabel value="Empresa" for="empresa" />
+			<h:column>
+				<h:selectOneMenu id="setor" value="#{setorController.setor_cad.usuario}"
+					converter="simpleEntityConverter" required="true"
+					requiredMessage="Valor é obrigatório">
+					<f:selectItem itemValue="" itemLabel="Selecione uma empresa" />
+					<f:selectItems value="#{setorController.lista_usuarios}" var="u"
+						itemLabel="#{u.nome}" itemValue="#{u}" />
+				</h:selectOneMenu>
+				<br />
+				<h:message for="empresa" errorStyle="color:darkred;font-size:11px;"></h:message>
+			</h:column>
+			<f:facet name="footer">
+				<h:commandButton value="Submit" />
+			</f:facet>
+		</h:panelGrid>
+	</h:form>
+</h:body>
+</html>
