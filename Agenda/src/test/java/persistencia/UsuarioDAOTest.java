@@ -21,7 +21,7 @@ public class UsuarioDAOTest {
 		try {
 			Instituicao instituicao = em.find(Instituicao.class, 9);
 			Setor setor = em.find(Setor.class, 12);
-			Usuario u = new Usuario("ERICK ROCHA", "EROCHA", "teste", new Date(),instituicao,setor);
+			Usuario u = new Usuario("ADMINISTRADOR", "ADMIN", "admin", new Date(),instituicao,setor);
 			UsuarioDAO dao = new UsuarioDAO();
 			u = dao.inserir(u);		
 			u.toString();

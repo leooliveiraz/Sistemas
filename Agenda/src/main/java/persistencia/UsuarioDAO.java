@@ -29,6 +29,21 @@ public class UsuarioDAO {
 		}		
 		return usuario;
 	}
+	public Usuario atualizar(Usuario usuario){
+		EntityManager em = JpaUtil.getEntityManager();
+		EntityTransaction tx = em.getTransaction();
+
+		tx.begin();
+		try{
+			em.merge(usuario);
+			tx.commit();
+		}catch(Exception e){
+			tx.rollback();
+		}finally{
+			em.close();
+		}		
+		return usuario;
+	}
 
 	public Usuario valida_login(Usuario usuario){
 		EntityManager em = new JpaUtil().getEntityManager();

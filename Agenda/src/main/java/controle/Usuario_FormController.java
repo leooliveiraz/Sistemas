@@ -1,11 +1,15 @@
 package controle;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+
+import org.primefaces.context.RequestContext;
 
 import entidades.Setor;
 import entidades.Usuario;
@@ -15,7 +19,12 @@ import sistema.Utilitarios;
 
 @ManagedBean
 @ViewScoped
-public class Usuario_FormController {
+public class Usuario_FormController implements Serializable{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 859817978984210970L;
 	private Usuario user_cad = new Usuario(),user_edit = new Usuario();
 	private List<Usuario> lista,lista_filtrada;
 	private List<Setor> lista_setor;
@@ -84,10 +93,41 @@ public class Usuario_FormController {
 		this.senha_confirmacao = "";
 	}
 	
+	public void edita_usuario(){
+		this.senha_confirmacao = this.user_edit.getSenha();
+	}
+	
 	public void cadastra_usuario(){
+		this.user_cad.setInstituicao(usuarioController.getUser().getInstituicao());
 		UsuarioDAO dao = new UsuarioDAO();
 		if(this.senha_confirmacao.equals(this.user_cad.getSenha())){
 			dao.inserir(this.user_cad);			
+			novo_usuario();
+			gera_lista();
+			RequestContext.getCurrentInstance().execute("PF('cad_us').hide();");
+		}else{
+			Utilitarios.msg_erro("As senhas informadas não conferem");
+		}
+	}
+	public void altera_usuario(){
+		UsuarioDAO dao = new UsuarioDAO();
+		if(this.senha_confirmacao.equals(this.user_edit.getSenha())){
+			dao.atualizar(this.user_edit)	;	
+			novo_usuario();
+			gera_lista();
+			RequestContext.getCurrentInstance().execute("PF('edit_us').hide();");
+		}else{
+			Utilitarios.msg_erro("As senhas informadas não conferem");
+		}
+	}
+
+	public void reseta_usuario(){
+		UsuarioDAO dao = new UsuarioDAO();
+		if(this.senha_confirmacao.equals(this.user_edit.getSenha())){
+			dao.atualizar(this.user_edit);	
+			novo_usuario();
+			gera_lista();
+			RequestContext.getCurrentInstance().execute("PF('reset_us').hide();");
 		}else{
 			Utilitarios.msg_erro("As senhas informadas não conferem");
 		}

@@ -6,7 +6,7 @@
 	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
 
 <h:head>
-	<title>Cadastro de empresa</title>
+	<title>Cadastro de usuários</title>
 	<link rel="stylesheet" type="text/css" href="css/estilo.css" />
 </h:head>
 <h:body>
@@ -29,25 +29,46 @@
 								<h4>
 									<h:outputText value="Preencha os dados necessários a seguir." />
 								</h4>
-								<p:messages autoUpdate="true" showDetail="true" />
+								<p:messages autoUpdate="false" showDetail="true" />
 								<hr />
-								<p:dataTable value="#{usuario_FormController.lista}" var="it" emptyMessage="Não encontramos nenhum dado."
-								scrollHeight="70%">
-									<p:column headerText="Usuário:"><h:outputText value="#{it.login}" /> </p:column>
-									<p:column headerText="Nome:"><h:outputText value="#{it.nome}" /> </p:column>
-									<p:column headerText="Setor:"><h:outputText value="#{it.setor.nm_setor}" /> </p:column>
-									<p:column headerText="Data de Nascimento:"><h:outputText value="#{it.dt_nascimento}" /> </p:column>
-									
-								
+								<p:dataTable value="#{usuario_FormController.lista}" var="it" id="tab"
+									selectionMode="single" selection="#{usuario_FormController.user_edit}" rowKey="#{it.id}"
+									emptyMessage="Não encontramos nenhum dado." scrollHeight="70%">
+									<p:ajax event="rowSelect" update=":edit:pn_edit">
+										<f:setPropertyActionListener value="#{it}" target="#{usuario_FormController.user_edit}" />
+									</p:ajax>
+									<p:column headerText="Usuário:">
+										<h:outputText value="#{it.login}" />
+									</p:column>
+									<p:column headerText="Nome:">
+										<h:outputText value="#{it.nome}" />
+									</p:column>
+									<p:column headerText="Setor:">
+										<h:outputText value="#{it.setor.nm_setor}" />
+									</p:column>
+									<p:column headerText="Data de Nascimento:">
+										<h:outputText value="#{it.dt_nascimento}"  >
+											<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-3"/>
+										 </h:outputText>
+									</p:column>
+
+
 								</p:dataTable>
 								<br />
 								<hr />
-								<p:commandButton value="Cadastrar" icon="fa fa-plus" onclick="PF('cad_us').show()"
+								<p:commandButton value="Cadastrar" icon="fa fa-plus"
+									onclick="PF('cad_us').show()"
 									styleClass="botao botao_verde botao_grande" type="submit"
+									actionListener="#{usuario_FormController.novo_usuario()}"
 									validateClient="true" />
-								<p:commandButton value="Alterar" icon="fa fa-recycle" 
+								<p:commandButton value="Alterar" icon="fa fa-recycle"
+									oncomplete="PF('edit_us').show()" update=":edit:pn_edit"
 									styleClass="botao botao_amarelo botao_grande" type="submit"
-									validateClient="true" />
+									actionListener="#{usuario_FormController.edita_usuario()}" />									
+								<p:commandButton value="Resetar" icon="fa fa-exchange"
+									oncomplete="PF('reset_us').show()" update=":reset:pn_reset"
+									styleClass="botao botao_vermelho botao_grande" type="submit"
+									actionListener="#{usuario_FormController.edita_usuario()}" />
 							</center>
 						</b:panel>
 					</div>
@@ -57,39 +78,137 @@
 			</div>
 		</p:outputPanel>
 	</h:form>
-	
+
 	<!-- FORM CADASTRO -->
-	<h:form id="cad" >
+	<h:form id="cad">
 		<p:dialog widgetVar="cad_us">
-			<center>				
+			<center>
+				<p:messages autoUpdate="false" id="msg_cad" />
 				<p:panelGrid columns="3" styleClass="sem_borda" id="pn_cad">
 					<h:outputText value="Usuário:" />
-					<p:inputText value="#{usuario_FormController.user_cad.login}" id="cad_login"/>
-					<p:message for="cad_login"  />
-					
+					<p:inputText value="#{usuario_FormController.user_cad.login}"
+						id="cad_login" />
+					<p:message for="cad_login" />
+
 					<h:outputText value="Nome:" />
-					<p:inputText value="#{usuario_FormController.user_cad.nome}" id="cad_nome"/>
+					<p:inputText value="#{usuario_FormController.user_cad.nome}"
+						id="cad_nome" />
 					<p:message for="cad_nome" />
-					
+
 					<h:outputText value="Data de Nascimento:" />
-					<p:calendar value="#{usuario_FormController.user_cad.dt_nascimento}" id="cad_dt" />	
+					<p:calendar navigator="true" pattern="dd/MM/yyyy" locale="pt"
+						value="#{usuario_FormController.user_cad.dt_nascimento}"
+						id="cad_dt" />
 					<p:message for="cad_dt" />
-					
-					<h:outputText value="Setor" />	
-					<p:selectOneMenu value="#{usuario_FormController.user_cad.setor}" id="cad_setor">
-						<f:selectItem itemLabel="Selecione um setor."/>
-						<f:selectItems value="#{usuario_FormController.lista_setor}" var="it" itemLabel="#{it.nm_setor}" itemValue="#{it}" />
-					</p:selectOneMenu>	
-					<p:message for="cad_setor" />		
-						
-					<h:outputText value="Senha:" />	
-					<p:password value="#{usuario_FormController.user_cad.senha}" id="cad_senha" />	
-					<p:message for="cad_senha" />		
-						
-					<h:outputText value="Confirme a senha:" />					
-					<p:password value="#{usuario_FormController.senha_confirmacao}" id="cad_senha_c" />	
-					<p:message for="cad_senha_c" />	
+
+					<h:outputText value="Setor" />
+					<p:selectOneMenu value="#{usuario_FormController.user_cad.setor}" converter="simpleEntityConverter"
+						id="cad_setor" >
+						<f:selectItem itemLabel="Selecione um setor." />
+						<f:selectItems value="#{usuario_FormController.lista_setor}"
+							var="it" itemLabel="#{it.nm_setor}" itemValue="#{it}" />
+					</p:selectOneMenu>
+					<p:message for="cad_setor" />
+
+					<h:outputText value="Senha:" />
+					<p:password value="#{usuario_FormController.user_cad.senha}"
+						id="cad_senha" />
+					<p:message for="cad_senha" />
+
+					<h:outputText value="Confirme a senha:" />
+					<p:password value="#{usuario_FormController.senha_confirmacao}"
+						id="cad_senha_c" />
+					<p:message for="cad_senha_c" />
+
 				</p:panelGrid>
+				<br />
+				<p:commandButton value="Cadastrar" icon="fa fa-plus"
+					styleClass="botao botao_verde " actionListener="#{usuario_FormController.cadastra_usuario()}"
+					ajax="true"  update=":principal:tab"
+					validateClient="true" />
+				<p:commandButton value="Cancelar" icon="fa fa-times" onclick="PF('cad_us').hide()"
+					styleClass="botao botao_vermelho " type="reset" update=":principal:tab"
+					validateClient="true" />
+			</center>
+		</p:dialog>
+	</h:form>
+	
+	<!-- FORM EDIÇÃO -->
+	<h:form id="edit">
+		<p:dialog widgetVar="edit_us">
+			<center>
+				<p:messages autoUpdate="false" id="msg_edit" />
+				<p:panelGrid columns="3" styleClass="sem_borda" id="pn_edit">
+					<h:outputText value="Usuário:" />
+					<p:inputText value="#{usuario_FormController.user_edit.login}"
+						id="edit_login" disabled="true" />
+					<p:message for="edit_login" />
+
+					<h:outputText value="Nome:" />
+					<p:inputText value="#{usuario_FormController.user_edit.nome}"
+						id="edit_nome" />
+					<p:message for="edit_nome" />
+
+					<h:outputText value="Data de Nascimento:" />
+					<p:calendar navigator="true" pattern="dd/MM/yyyy" locale="pt"
+						value="#{usuario_FormController.user_edit.dt_nascimento}"
+						id="edit_dt" />
+					<p:message for="edit_dt" />
+
+					<h:outputText value="Setor" />
+					<p:selectOneMenu value="#{usuario_FormController.user_edit.setor}" converter="simpleEntityConverter"
+						id="edit_setor" >
+						<f:selectItem itemLabel="Selecione um setor." />
+						<f:selectItems value="#{usuario_FormController.lista_setor}"
+							var="it" itemLabel="#{it.nm_setor}" itemValue="#{it}" />
+					</p:selectOneMenu>
+					<p:message for="edit_setor" />					
+				</p:panelGrid>
+				<br />
+				<p:commandButton value="Alterar" icon="fa fa-plus"
+					styleClass="botao botao_verde " actionListener="#{usuario_FormController.altera_usuario()}"
+					ajax="true"  update=":principal:tab"
+					validateClient="true" />
+				<p:commandButton value="Cancelar" icon="fa fa-times" onclick="PF('edit_us').hide()"
+					styleClass="botao botao_vermelho " type="reset" update=":principal:tab"
+					validateClient="true" />
+			</center>
+		</p:dialog>
+	</h:form>
+	
+	<!-- FORM RESET -->
+	<h:form id="reset">
+		<p:dialog widgetVar="reset_us">
+			<center>
+				<p:messages autoUpdate="false" id="msg_reset" showDetail="true" showSummary="false" />
+				<p:panelGrid columns="3" styleClass="sem_borda" id="pn_reset">
+					<h:outputText value="Usuário:" />
+					<p:inputText value="#{usuario_FormController.user_edit.login}"
+						id="reset_login" disabled="true" />
+					<p:message for="reset_login" />
+
+					<h:outputText value="Nome:" />
+					<p:inputText value="#{usuario_FormController.user_edit.nome}"
+						id="reset_nome" disabled="true" />
+					<p:message for="reset_nome" />	
+					
+					<h:outputText value="Senha:" />
+					<p:password value="#{usuario_FormController.user_edit.senha}"
+						id="reset_senha" />
+					<p:message for="reset_senha" />	
+					
+					<h:outputText value="Confirme a senha:" />
+					<p:password value="#{usuario_FormController.senha_confirmacao}"
+						id="reset_senha_c" />
+				</p:panelGrid>
+				<br />
+				<p:commandButton value="Resetar senha" icon="fa fa-plus"
+					styleClass="botao botao_verde " actionListener="#{usuario_FormController.reseta_usuario()}"
+					ajax="true" update="msg_reset" 
+					validateClient="true" />
+				<p:commandButton value="Cancelar" icon="fa fa-times" onclick="PF('reset_us').hide()"
+					styleClass="botao botao_vermelho " type="reset" update=":principal:tab"
+					validateClient="true" />
 			</center>
 		</p:dialog>
 	</h:form>

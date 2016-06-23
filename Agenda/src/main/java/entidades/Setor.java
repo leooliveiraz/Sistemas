@@ -130,11 +130,7 @@ public class Setor implements Serializable,BaseEntity{
 	@Transient
 	public int getId() {
 		// TODO Auto-generated method stub
-		return 0;
+		return this.getId_setor();
 	}
-	
-	
-	
-	
 
 }

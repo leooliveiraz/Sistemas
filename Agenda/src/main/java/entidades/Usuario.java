@@ -91,8 +91,6 @@ public class Usuario implements Serializable,BaseEntity {
 	public Usuario() {
 		
 	}	
-
-	
 	
 	public Usuario(String nome, String login, String senha, Date dt_nascimento, Instituicao instituicao, Setor setor) {
 		super();
@@ -114,7 +112,6 @@ public class Usuario implements Serializable,BaseEntity {
 		result = prime * result + ((login == null) ? 0 : login.hashCode());
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
 		result = prime * result + ((senha == null) ? 0 : senha.hashCode());
-		result = prime * result + ((setor == null) ? 0 : setor.hashCode());
 		return result;
 	}
 
@@ -154,11 +151,18 @@ public class Usuario implements Serializable,BaseEntity {
 				return false;
 		} else if (!senha.equals(other.senha))
 			return false;
-		
+		if (setor == null) {
+			if (other.setor != null)
+				return false;
+		} else if (!setor.equals(other.setor))
+			return false;
 		return true;
 	}
 
-	
-
+	@Override
+	public String toString() {
+		return "Usuario [id=" + id + ", nome=" + nome + ", login=" + login + ", senha=" + senha + ", dt_nascimento="
+				+ dt_nascimento + ", instituicao=" + instituicao + "]";
+	}
 	
 }
