@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+<h:head>
+	<title>Cadastro de locais</title>
+	<link rel="stylesheet" type="text/css" href="css/estilo.css" />
+</h:head>
+<h:body>
+	<h:form>
+		<!-- Importa Cabecalho -->
+		<ui:include src="/cabecalho_logado.xhtml" />
+	</h:form>
+	<h:form id="principal">
+		<p:outputPanel>
+			<div class="ui-grid ui-grid-responsive">
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-1" />
+					<div class="ui-grid-col-10">
+						<b:panel look="info">
+
+							<center>
+								<h3>
+									<h:outputText value="Registro de Locais" />
+								</h3>
+								<h4>
+									<h:outputText value="Preencha os dados necessários a seguir." />
+								</h4>
+								<p:messages autoUpdate="false" showDetail="true" />
+								<hr />
+								<p:dataTable value="#{localController.lista}" var="it" emptyMessage="Não encontramos nenhum dado." scrollHeight="60%" scrollable="true"
+											 selection="#{localController.local_edit}" selectionMode="single" rowKey="#{it.id}"  >
+									<p:ajax event="rowSelect">
+										<f:setPropertyActionListener value="#{it}" target="#{localController.local_edit}" />
+									</p:ajax>
+									<p:column headerText="Local:"><h:outputText value="#{it.ds_local}" />  </p:column>
+									<p:column headerText="Data de Ativação:"><h:outputText value="#{it.dt_criacao}" >			<f:convertDateTime pattern="dd/MM/yyyy hh:mm" timeZone="GMT-3"/> </h:outputText>  </p:column>
+									<p:column headerText="Data de Inativação:"><h:outputText value="#{it.dt_inativacao}" >			<f:convertDateTime pattern="dd/MM/yyyy hh:mm" timeZone="GMT-3"/> </h:outputText>  </p:column>
+									<p:column headerText="Status:"><h:outputText value="#{it.sn_ativo == true?'ATIVO':'INATIVO'}" />  </p:column>
+								</p:dataTable>
+								<br />
+								<hr />
+								<p:commandButton value="Cadastrar" icon="fa fa-plus"
+									onclick="PF('cad_locais').show()" actionListener="#{localController.novo_local()}"
+									styleClass="botao botao_verde botao_grande" type="submit" update=":cad:pn_cad" />
+								<p:commandButton value="Alterar" icon="fa fa-recycle"
+									oncomplete="PF('edit_locais').show()" update=":edit:pn_edit"
+									styleClass="botao botao_amarelo botao_grande" type="submit"
+									actionListener="#{localController.novo_atualizar()}" />	
+							</center>
+						</b:panel>
+					</div>
+					<div class="ui-grid-col-1" />
+
+				</div>
+			</div>
+		</p:outputPanel>
+	</h:form>
+
+	<!-- FORM CADASTRO -->
+	<h:form id="cad">
+		<p:dialog widgetVar="cad_locais">
+			<center>
+				<p:messages autoUpdate="false" id="msg_cad" />
+				<p:panelGrid columns="3" styleClass="sem_borda" id="pn_cad">
+					<h:outputText value="Descrição do local:" />
+					<p:inputText id="cad_ds" value="#{localController.local_cad.ds_local}" required="true" />
+					<p:message for="cad_ds" />
+					
+					<h:outputText value="Data de criação:" />
+					<p:inputText id="cad_dt" value="#{localController.local_cad.dt_criacao}" disabled="true"  >
+					<f:convertDateTime pattern="dd/MM/yyyy hh:mm" timeZone="GMT-3"/> </p:inputText>
+					<p:message for="cad_ds" />
+					
+				</p:panelGrid>
+				<br />
+				<p:commandButton value="Cadastrar" icon="fa fa-plus"
+					styleClass="botao botao_verde "  actionListener="#{localController.cadastrar_local()}"
+					ajax="true"  update=":principal"
+					validateClient="true" />
+				<p:commandButton value="Cancelar" icon="fa fa-times" onclick="PF('cad_locais').hide()"
+					styleClass="botao botao_vermelho " type="reset" update=":principal"
+					validateClient="true" />
+			</center>
+		</p:dialog>
+	</h:form>
+	
+	<!-- FORM EDIÇÃO -->
+	<h:form id="edit">
+		<p:dialog widgetVar="edit_locais">
+			<center>
+				<p:messages autoUpdate="false" id="msg_edit" />
+				<p:panelGrid columns="3" styleClass="sem_borda" id="pn_edit">
+					<h:outputText value="Descrição do local:" />
+					<p:inputText id="edit_ds" value="#{localController.local_edit.ds_local}" required="true" />
+					<p:message for="edit_ds" />
+					
+					<h:outputText value="Data de criação:" />
+					<p:inputText id="edit_dt" value="#{localController.local_edit.dt_criacao}" disabled="true" >
+					<f:convertDateTime pattern="dd/MM/yyyy hh:mm" /> </p:inputText>
+					<p:message for="edit_dt" />
+					
+					<h:outputText value="Status:" />
+					<p:selectOneMenu id="edit_sn" value="#{localController.local_edit.sn_ativo}">
+						<f:selectItem itemValue="#{true}" itemLabel="ATIVO"/>
+						<f:selectItem itemValue="#{false}" itemLabel="INATIVO"/>
+					</p:selectOneMenu>
+					<p:message for="edit_sn" />
+					
+					<h:outputText value="Data de Inativação:" />
+					<p:inputText id="edit_in" value="#{localController.local_edit.dt_inativacao}" disabled="true" >
+					<f:convertDateTime pattern="dd/MM/yyyy hh:mm" /> </p:inputText>
+					<p:message for="edit_in" />
+							
+				</p:panelGrid>
+				<br />
+				<p:commandButton value="Alterar" icon="fa fa-plus" actionListener="#{localController.atualizar_local()}"
+					styleClass="botao botao_verde"	ajax="true"  update=":principal"
+					validateClient="true" />
+				<p:commandButton value="Cancelar" icon="fa fa-times" onclick="PF('edit_locais').hide()"
+					styleClass="botao botao_vermelho " type="reset" update=":principal"
+					validateClient="true" />
+			</center>
+		</p:dialog>
+	</h:form>
+	
+	
+</h:body>
+</html>

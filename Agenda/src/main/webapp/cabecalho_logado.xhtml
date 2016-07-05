@@ -11,17 +11,17 @@
 	<script language="javascript" src="js/scripts.js"></script>
 </h:head>
 <h:body>
-	<b:navBar brand="Projeto" brandHref="#" inverse="true" fluid="true">
+	<b:navBar brand="Agenda" brandHref="#" inverse="true" fluid="true">
 		<b:navbarLinks>
 			
-			<b:navLink value="Agenda" href="#"></b:navLink>
+			<b:navLink value="Agenda" href="agenda.xhtml"></b:navLink>
 			<b:navLink value="Eventos" href="#"></b:navLink>
 
 		</b:navbarLinks>
 
 		<b:navbarLinks pull="right" >
 			<b:dropMenu value="Olá #{usuarioController.recupera_usuario()}">
-				<b:navLink value="Meu perfil" href="#" />
+				<b:navLink value="Meu perfil" href="meu_perfil.xhtml" />
 				<b:navLink value="Meus convites" href="#" />
 				<b:navLink value="Meus eventos" href="#" />
 				<b:navLink></b:navLink>
