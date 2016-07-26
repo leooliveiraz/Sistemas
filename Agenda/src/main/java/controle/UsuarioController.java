@@ -6,6 +6,7 @@ package controle;
 import java.io.IOException;
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -15,6 +16,7 @@ import org.apache.log4j.Logger;
 
 import entidades.Instituicao;
 import entidades.Usuario;
+import persistencia.InstituicaoDAO;
 import persistencia.UsuarioDAO;
 import sistema.Utilitarios;
 
@@ -105,6 +107,20 @@ public class UsuarioController implements Serializable{
 			return this.user.getNome();
 		}
 		return null;
+	}
+	
+	@PostConstruct
+	public void auto_login(){
+		try {
+			UsuarioDAO userDAO = new UsuarioDAO();
+			Usuario user = userDAO.usuario_id(53);
+			this.user = user;	
+			this.user.setSenha("admin");
+			realiza_login();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }

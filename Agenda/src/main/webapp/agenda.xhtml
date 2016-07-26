@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+<h:head>
+	<title>Cadastro de usuários</title>
+	<link rel="stylesheet" type="text/css" href="css/estilo.css" />
+</h:head>
+<h:body>
+	<h:form>
+		<!-- Importa Cabecalho -->
+		<ui:include src="/cabecalho_logado.xhtml" />
+	</h:form>
+	<h:form id="principal">
+		<p:outputPanel>
+			<div class="ui-grid ui-grid-responsive">
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-1" />
+					<div class="ui-grid-col-10">
+						<b:panel look="info">
+							<p:messages autoUpdate="false" showDetail="true" />
+							<center>
+								<p:selectOneMenu value="#{agendaController.local}"
+									converter="simpleEntityConverter">
+									<f:selectItem itemLabel="ESCOLHA UM LOCAL"
+										noSelectionOption="true" />
+									<f:selectItems value="#{agendaController.lista_local}" var="it"
+										itemValue="#{it}" itemLabel="#{it.ds_local}" />
+
+									<p:ajax event="change"
+										listener="#{agendaController.gera_agendas()}"
+										update="schedule"></p:ajax>
+								</p:selectOneMenu>
+								<hr />
+								<p:schedule id="schedule" value="#{agendaController.eventModel}"
+									locale="pt" timeFormat="HH:mm" draggable="false"
+									resizable="false" axisFormat="HH:mm">
+									<p:ajax event="dateSelect" update="sel:wiz_cad"
+										listener="#{agendaController.nova_agenda}" />
+
+
+								</p:schedule>
+
+								<br />
+								<hr />
+							</center>
+						</b:panel>
+					</div>
+					<div class="ui-grid-col-1" />
+
+				</div>
+			</div>
+		</p:outputPanel>
+	</h:form>
+	<!-- SELECIONA DATA -->
+	<h:form id="sel">
+		<p:dialog modal="true" widgetVar="sel_data" width="80%"
+			style="heigth:100%">
+			<p:wizard nextLabel="Próximo" backLabel="Voltar" id="wiz_cad">
+				<p:tab id="info" title="Informações">
+					<p:panel>
+						<p:panelGrid styleClass="sem_borda" columns="2">
+
+							<h:outputText value="Título:" />
+							<p:inputText value="#{agendaController.age_cad.titulo}" />
+
+							<h:outputText value="Descrição:" />
+							<p:inputTextarea value="#{agendaController.age_cad.ds_agenda}" />
+
+							<h:outputText value="Responsável:" />
+							<p:inputText
+								value="#{agendaController.age_cad.usuario_solicitante.nome}"
+								disabled="true" />
+
+							<h:outputText value="Setor Responsável:" />
+							<p:inputText
+								value="#{agendaController.age_cad.setor_solicitante.nm_setor}"
+								disabled="true" />
+
+							<h:outputText value="Data:" />
+							<p:calendar locale="pt" pattern="dd/MM/yyyy"
+								value="#{agendaController.age_cad.dt_inicial}" disabled="true" />
+
+							<h:outputText value="Inicio:" />
+							<p:calendar locale="pt" pattern="HH:mm"
+								value="#{agendaController.age_cad.hora_inicial}" timeOnly="true"
+								stepMinute="15" timeControlType="select">
+								<f:convertDateTime pattern="HH:mm" />
+							</p:calendar>
+
+							<h:outputText value="Fim:" />
+							<p:calendar locale="pt" pattern="HH:mm"
+								value="#{agendaController.age_cad.hora_final}" timeOnly="true"
+								stepMinute="15" timeControlType="select">
+								<f:convertDateTime pattern="HH:mm" />
+							</p:calendar>
+						</p:panelGrid>
+
+					</p:panel>
+				</p:tab>
+				<p:tab id="setores" title="Setores" >
+					<p:panel>
+						<center>
+							<h2>Escolha os setores que participarão da reunião</h2>
+							<br /> <br />
+							<p:selectManyCheckbox label="Setores convidados"
+								style="font-size:12px" update="wiz_cad:usuarios"
+								value="#{agendaController.age_cad.setores}" columns="3"
+								layout="grid" converter="simpleEntityConverter">
+								<f:selectItems value="#{agendaController.lista_setores}"
+									var="it" itemValue="#{it}" itemLabel="#{it.nm_setor}" />
+								<p:ajax listener="#{agendaController.usuarios_por_setor()}"/>
+							</p:selectManyCheckbox>
+						</center>
+
+						<br />
+
+					</p:panel>
+				</p:tab>
+				<p:tab id="usuarios" title="Usuários">
+					<p:panel>
+						<p:dataTable id="tab_usuarios" value="#{agendaController.lista_usuarios}" var="it" emptyMessage="Não foi encontrado nenhum dado.">
+							<p:column headerText="Usuario"> <h:outputText value="#{it.nome}" /></p:column>
+							<p:column headerText="Setor"> 	<h:outputText value="#{it.setor.nm_setor}" /></p:column>							
+							<p:column headerText="Convidar"> <center><p:selectBooleanButton valueChangeListener="#{agendaController.adicionar_usuario()}" onLabel="SIM" offLabel="NÃO" value="#{it.sn_convidado}"> </p:selectBooleanButton> </center></p:column>			
+							<p:column headerText="Confirmação"> <center><p:selectBooleanButton disabled="#{true}" onLabel="SIM" offLabel="NÃO" > </p:selectBooleanButton> </center></p:column>		
+							<p:column headerText="Compareceu" rendered="#{agendaController.age_cad.sn_concluido == 'true'}" > <center><p:selectBooleanButton onLabel="SIM" offLabel="NÃO" > </p:selectBooleanButton> </center></p:column>	
+						</p:dataTable>
+						<br />
+						<p:commandButton title="Cadastrar" value="Salvar"
+							update="principal:schedule" 
+							actionListener="#{agendaController.cadastrar_agenda()}"></p:commandButton>
+						<br />
+					</p:panel>
+				</p:tab>
+			</p:wizard>
+		</p:dialog>
+	</h:form>
+
+</h:body>
+</html>

@@ -9,86 +9,86 @@ import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 
+import entidades.Agenda_Usuario;
 import entidades.Instituicao;
 import entidades.Setor;
 import entidades.Usuario;
 import sistema.JpaUtil;
 
-public class UsuarioDAO {
-	public Usuario inserir(Usuario usuario){
+public class Agenda_UsuarioDAO {
+	public Agenda_Usuario inserir(Agenda_Usuario agenda_usuario){
 		EntityManager em = JpaUtil.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 
 		tx.begin();
 		try{
-			em.persist(usuario);
+			em.persist(agenda_usuario);
 			tx.commit();
 		}catch(Exception e){
 			tx.rollback();
 		}finally{
 			em.close();
 		}		
-		return usuario;
+		return agenda_usuario;
 	}
-	public Usuario atualizar(Usuario usuario){
+	public Agenda_Usuario atualizar(Agenda_Usuario agenda_usuario){
 		EntityManager em = JpaUtil.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 
 		tx.begin();
 		try{
-			em.merge(usuario);
+			em.merge(agenda_usuario);
 			tx.commit();
 		}catch(Exception e){
 			tx.rollback();
 		}finally{
 			em.close();
 		}		
-		return usuario;
+		return agenda_usuario;
 	}
 
-	public Usuario valida_login(Usuario usuario){
+	public Long conta_usuarios(Agenda_Usuario agenda_usuario){
 		EntityManager em = new JpaUtil().getEntityManager();
-		Query query = em.createQuery("from Usuario where instituicao = :ins and login like :user and senha = sha2( :pass , 512 )");
+		Query query = em.createQuery("select count (*)from Agenda_Usuario where agenda = :agenda and usuario like :user ");
 		Usuario user;
-		List<Usuario> l;
+		long l =0;
 		try {
-			query.setParameter("user", usuario.getLogin());
-			query.setParameter("pass", usuario.getSenha());
-			query.setParameter("ins", usuario.getInstituicao());
+			query.setParameter("user", agenda_usuario.getUsuario());
+			query.setParameter("agenda", agenda_usuario.getAgenda());
 
-			l = query.getResultList();
-			user = l.get(0);
-			return user;
+			l = (long) query.getSingleResult();
+			
+			return l;
 		} catch (Exception e) {
-			Logger log =Logger.getLogger(UsuarioDAO.class);
+			Logger log =Logger.getLogger(Agenda_UsuarioDAO.class);
 			log.info(e.getStackTrace());
-			return null;
+			return (long) 0.0;
 		}finally {
 			em.close();
 		}		
 	}
 	
-	public List<Usuario> lista_usuarios(){
+	public List<Agenda_Usuario> lista_usuarios(){
 		EntityManager em = JpaUtil.getEntityManager();
-		List<Usuario> lista;
-		Query q = em.createQuery("from Usuario");
+		List<Agenda_Usuario> lista;
+		Query q = em.createQuery("from Agenda_Usuario");
 		lista = q.getResultList();
 		return lista;
 	}
 	
-	public List<Usuario> lista_usuarios_instituicao(Instituicao instituicao){
+	public List<Agenda_Usuario> lista_usuarios_instituicao(Instituicao instituicao){
 		EntityManager em = JpaUtil.getEntityManager();
-		List<Usuario> lista;
-		Query q = em.createQuery("from Usuario where instituicao = :i");
+		List<Agenda_Usuario> lista;
+		Query q = em.createQuery("from Agenda_Usuario where agenda.instituicao = :i");
 		q.setParameter("i", instituicao);
 		lista = q.getResultList();
 		return lista;
 	}
 	
-	public List<Usuario> lista_usuarios_setor(Instituicao instituicao,List<Setor> lista_setor){
+	public List<Agenda_Usuario> lista_usuarios_setor(Instituicao instituicao,List<Setor> lista_setor){
 		EntityManager em = JpaUtil.getEntityManager();
-		List<Usuario> lista;
-		Query q = em.createQuery("from Usuario where instituicao = :i and setor in (:lista"
+		List<Agenda_Usuario> lista;
+		Query q = em.createQuery("from Agenda_Usuario where agenda.instituicao = :i and  agenda.setor in (:lista"
 				+ ") order by setor");
 		q.setParameter("i", instituicao);
 		q.setParameter("lista", lista_setor);
@@ -97,11 +97,11 @@ public class UsuarioDAO {
 	}
 	
 	
-	public Usuario usuario_id(int id){
+	public Agenda_Usuario usuario_id(int id){
 		EntityManager em = JpaUtil.getEntityManager();
 		try{
-			Usuario u = em.find(Usuario.class, id);
-			return u;			
+			Agenda_Usuario agenda_usuario = em.find(Agenda_Usuario.class, id);
+			return agenda_usuario;			
 		}catch(Exception e){
 			e.printStackTrace();
 			return null;

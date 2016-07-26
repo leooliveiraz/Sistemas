@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import sistema.BaseEntity;
 
@@ -22,6 +23,7 @@ public class Usuario implements Serializable,BaseEntity {
 	private Date dt_nascimento;
 	private Instituicao instituicao;
 	private Setor setor;
+	private boolean sn_convidado;
 	
 	
 	@Id
@@ -86,6 +88,15 @@ public class Usuario implements Serializable,BaseEntity {
 
 	public void setSetor(Setor setor) {
 		this.setor = setor;
+	}
+
+	@Transient
+	public boolean isSn_convidado() {
+		return sn_convidado;
+	}
+
+	public void setSn_convidado(boolean sn_convidado) {
+		this.sn_convidado = sn_convidado;
 	}
 
 	public Usuario() {
