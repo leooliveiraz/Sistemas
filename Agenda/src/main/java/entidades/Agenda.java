@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -97,7 +98,7 @@ public class Agenda implements Serializable{
 		this.dt_marcacao = dt_marcacao;
 	}
 	@ManyToOne
-	@JoinColumn(name="id_setor")
+	@JoinColumn(name="id_setor") 
 	public Setor getSetor_solicitante() {
 		return setor_solicitante;
 	}
@@ -113,7 +114,7 @@ public class Agenda implements Serializable{
 		this.usuario_solicitante = usuario_solicitante;
 	}
 	
-	@ManyToMany
+	@ManyToMany (fetch = FetchType.EAGER)
 	@JoinTable(name="agenda_setores",
 	joinColumns=@JoinColumn(name="id_agenda"),
 	inverseJoinColumns=@JoinColumn(name="id_setor"))
@@ -128,13 +129,13 @@ public class Agenda implements Serializable{
 	}
 	public void setSn_concluido(boolean sn_concluido) {
 		this.sn_concluido = sn_concluido;
+	}
+	@Override
+	public String toString() {
+		return "Agenda [id=" + id + ", instituicao=" + instituicao + ", local=" + local + ", titulo=" + titulo
+				+ ", ds_agenda=" + ds_agenda + ", dt_inicial=" + dt_inicial + ", hora_inicial=" + hora_inicial
+				+ ", hora_final=" + hora_final + ", dt_marcacao=" + dt_marcacao + ", setor_solicitante="
+				+ setor_solicitante + ", usuario_solicitante=" + usuario_solicitante + ", setores=" + setores
+				+ ", sn_concluido=" + sn_concluido + "]";
 	}	
-	
-	
-	
-	
-	
-	
-	
-	
 }

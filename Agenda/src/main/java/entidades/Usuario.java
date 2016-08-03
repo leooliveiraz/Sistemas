@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -19,11 +20,12 @@ import sistema.BaseEntity;
 public class Usuario implements Serializable,BaseEntity {
 	private static final long serialVersionUID = 2485161553455351068L;
 	private int id;
-	private String nome, login, senha;
+	private String nome, login, senha, email, telefone;
 	private Date dt_nascimento;
 	private Instituicao instituicao;
 	private Setor setor;
 	private boolean sn_convidado;
+
 	
 	
 	@Id
@@ -80,7 +82,7 @@ public class Usuario implements Serializable,BaseEntity {
 	public void setInstituicao(Instituicao instituicao) {
 		this.instituicao = instituicao;
 	}
-	@ManyToOne
+	@ManyToOne (fetch = FetchType.EAGER)
 	@JoinColumn(name="id_setor")
 	public Setor getSetor() {
 		return setor;
@@ -88,6 +90,22 @@ public class Usuario implements Serializable,BaseEntity {
 
 	public void setSetor(Setor setor) {
 		this.setor = setor;
+	}
+	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
 	}
 
 	@Transient

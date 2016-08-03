@@ -17,6 +17,7 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
+import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 
 import entidades.Agenda;
@@ -48,13 +49,14 @@ public class AgendaController implements Serializable{
 	
 	private List<Setor> lista_setores,lista_setores_escolhidos;
 	private Setor setor = new Setor();
-	
+
 	private List<Usuario> lista_usuarios,lista_usuarios_escolhidos; 
 	private Usuario usuario_escolha;	
 	
 	private Date dt_atual = new Date();
 	private	Logger log =Logger.getLogger(this.getClass());
 
+    private ScheduleEvent event = new DefaultScheduleEvent();
 	
 	public Usuario getUsuario_escolha() {
 		return usuario_escolha;
@@ -219,17 +221,17 @@ public class AgendaController implements Serializable{
 	}
 	
 	public void cadastrar_agenda(){
-		AgendaDAO dao = new AgendaDAO();
-		this.age_cad.setDt_marcacao(new Date());
-		
-		
-		this.age_cad = dao.cadastrar_agenda(this.age_cad);
-		adicionar_usuario();
-		gera_agendas();
-		
-		this.lista_usuarios = new ArrayList<>();
-		RequestContext.getCurrentInstance().execute("PF('sel_data').hide();");	
-		
+		if(this.age_cad.getHora_final().after(this.age_cad.getHora_inicial())){
+			AgendaDAO dao = new AgendaDAO();
+			this.age_cad.setDt_marcacao(new Date());			
+			
+			this.age_cad = dao.cadastrar_agenda(this.age_cad);
+			adicionar_usuario();
+			gera_agendas();
+			
+			this.lista_usuarios = new ArrayList<>();
+			RequestContext.getCurrentInstance().execute("PF('sel_data').hide();");	
+		}				
 	}
 	
 	public void adicionar_usuario(){
@@ -243,4 +245,25 @@ public class AgendaController implements Serializable{
 			}
 		}
 	}
+	
+	public void selecionar_evento(SelectEvent selectEvent) {
+		
+        event = (ScheduleEvent) selectEvent.getObject();
+        this.age_edit = new Agenda();
+        this.age_edit.setLocal(this.local);
+        this.age_edit.setDt_inicial(event.getStartDate());
+        this.age_edit.setHora_inicial(event.getStartDate());
+        this.age_edit.setHora_final(event.getEndDate());
+        this.age_edit.setDs_agenda(event.getTitle());
+        
+        
+        AgendaDAO dao = new AgendaDAO();
+        this.age_edit = dao.busca_agenda(this.age_edit);
+        
+        UsuarioDAO usuario_dao = new UsuarioDAO();
+		this.lista_usuarios = usuario_dao.lista_usuarios_setor(this.usuarioController.getUser().getInstituicao(),this.age_edit.getSetores());
+		this.lista_usuarios_escolhidos = new ArrayList<>();
+		RequestContext.getCurrentInstance().execute("PF('edit_agenda').show();");	
+    }
+	
 }

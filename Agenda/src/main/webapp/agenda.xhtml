@@ -23,7 +23,7 @@
 						<b:panel look="info">
 							<p:messages autoUpdate="false" showDetail="true" />
 							<center>
-								<p:selectOneMenu value="#{agendaController.local}"
+								<p:selectOneMenu value="#{agendaController.local}" 
 									converter="simpleEntityConverter">
 									<f:selectItem itemLabel="ESCOLHA UM LOCAL"
 										noSelectionOption="true" />
@@ -32,17 +32,21 @@
 
 									<p:ajax event="change"
 										listener="#{agendaController.gera_agendas()}"
-										update="schedule"></p:ajax>
+										update=":principal:panelSchedule @form" />
 								</p:selectOneMenu>
 								<hr />
-								<p:schedule id="schedule" value="#{agendaController.eventModel}"
-									locale="pt" timeFormat="HH:mm" draggable="false"
-									resizable="false" axisFormat="HH:mm">
-									<p:ajax event="dateSelect" update="sel:wiz_cad"
-										listener="#{agendaController.nova_agenda}" />
-
-
-								</p:schedule>
+								<p:panel id="panelSchedule" rendered="#{agendaController.local.id != null}" >
+									<p:schedule id="schedule" value="#{agendaController.eventModel}" 
+										locale="pt" timeFormat="HH:mm" draggable="false" 
+										resizable="false" axisFormat="HH:mm">
+										<p:ajax event="dateSelect" update="sel:wiz_cad"
+											listener="#{agendaController.nova_agenda}" />
+										<p:ajax event="eventSelect" listener="#{agendaController.selecionar_evento}" 
+											update="edicao:wiz_edit @this" />
+						
+		
+									</p:schedule>
+								</p:panel>
 
 								<br />
 								<hr />
@@ -57,7 +61,7 @@
 	</h:form>
 	<!-- SELECIONA DATA -->
 	<h:form id="sel">
-		<p:dialog modal="true" widgetVar="sel_data" width="80%"
+		<p:dialog modal="true" widgetVar="sel_data" width="80%" header="testss"
 			style="heigth:100%">
 			<p:wizard nextLabel="Próximo" backLabel="Voltar" id="wiz_cad">
 				<p:tab id="info" title="Informações">
@@ -133,6 +137,80 @@
 						<p:commandButton title="Cadastrar" value="Salvar"
 							update="principal:schedule" 
 							actionListener="#{agendaController.cadastrar_agenda()}"></p:commandButton>
+						<br />
+					</p:panel>
+				</p:tab>
+			</p:wizard>
+		</p:dialog>
+	</h:form>
+
+	<!-- FORM EDIÇÃO -->
+	<h:form id="edicao">
+		<p:dialog modal="true" widgetVar="edit_agenda" width="80%" 
+			style="heigth:100%">
+			<p:wizard nextLabel="Próximo" backLabel="Voltar" id="wiz_edit">
+				<p:tab id="info" title="Informações">
+					<p:panelGrid styleClass="sem_borda" columns="2">
+							<h:outputText value="Título:" />
+							<p:inputText value="#{agendaController.age_edit.titulo}" />
+
+							<h:outputText value="Descrição:" />
+							<p:inputTextarea value="#{agendaController.age_edit.ds_agenda}" />
+
+							<h:outputText value="Responsável:" />
+							<p:inputText
+								value="#{agendaController.age_edit.usuario_solicitante.nome}"
+								disabled="true" />
+
+							<h:outputText value="Setor Responsável:" />
+							<p:inputText
+								value="#{agendaController.age_edit.setor_solicitante.nm_setor}"
+								disabled="true" />
+
+							<h:outputText value="Data:" />
+							<p:calendar locale="pt" pattern="dd/MM/yyyy"
+								value="#{agendaController.age_edit.dt_inicial}" disabled="true" />
+
+							<h:outputText value="Inicio:" />
+							<p:calendar locale="pt" pattern="HH:mm"
+								value="#{agendaController.age_edit.hora_inicial}" timeOnly="true"
+								stepMinute="15" timeControlType="select">
+								<f:convertDateTime pattern="HH:mm" />
+							</p:calendar>
+
+							<h:outputText value="Fim:" />
+							<p:calendar locale="pt" pattern="HH:mm"
+								value="#{agendaController.age_edit.hora_final}" timeOnly="true"
+								stepMinute="15" timeControlType="select">
+								<f:convertDateTime pattern="HH:mm" />
+							</p:calendar>
+						</p:panelGrid>
+				</p:tab>
+				<p:tab id="setores" title="Setores">
+					<p:panel>
+						<center>
+							<h2>Escolha os setores que participarão da reunião</h2>
+							<br /> <br />
+							<p:selectManyCheckbox label="Setores convidados"
+								style="font-size:12px" update="wiz_edit:usuarios"
+								value="#{agendaController.age_edit.setores}" columns="3"
+								layout="grid" converter="simpleEntityConverter">
+								<f:selectItems value="#{agendaController.lista_setores}"
+									var="it" itemValue="#{it}" itemLabel="#{it.nm_setor}" />
+							</p:selectManyCheckbox>
+						</center>
+
+						<br />
+
+					</p:panel>
+				</p:tab>
+				<p:tab id="usuarios" title="Usuários">
+					<p:panel>
+						<p:dataTable id="tab_usuarios" value="#{agendaController.lista_usuarios}" var="it" emptyMessage="Não foi encontrado nenhum dado.">
+						</p:dataTable>
+						<br />
+						<p:commandButton title="Cadastrar" value="Salvar"
+							update="principal:schedule" ></p:commandButton>
 						<br />
 					</p:panel>
 				</p:tab>
